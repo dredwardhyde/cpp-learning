@@ -1,0 +1,31 @@
+//
+// Created by Edward Hyde on 07/10/2018.
+//
+
+#include <iostream>
+#include "date.h"
+
+using namespace std;
+
+int main(){
+    date d1{12, 27, 2010};
+    date d2;
+
+    cout << "d1 is " << d1 << "\nd2 is " << d2;
+    cout << "\n\nd1 += 7 is " << (d1 += 7);
+
+    d2.setDate(2, 28, 2008);
+    cout << "\n\n d2 is " << d2;
+    cout << "\n++d2 is " << ++d2 << " (leap year allows 29th)";
+
+    date d3{7, 13, 2010};
+
+    cout << "\n\nTesting the prefix increment operator:\n" << "  d3 is  " << d3 << endl;
+    cout << "++d3 is " << ++d3 << endl;
+    cout << "  d3 is " << d3;
+
+    cout << "\n\nTesting the postfix increment operator:\n" << "  d3 is  " << d3 << endl;
+    cout << "d3++ is " << d3++ << endl;
+    cout << "  d3 is " << d3;
+
+}
