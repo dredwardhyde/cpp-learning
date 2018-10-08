@@ -6,6 +6,19 @@
 
 using namespace std;
 
+//using decay_t = typename decay<T>::type;
+
+//If T is a function type, a function-to-pointer conversion is applied and the decay type is the same as: add_pointer<T>::type
+//If T is an array type, an array-to-pointer conversion is applied and the decay type is the same as: add_pointer<remove_extent<remove_reference<T>::type>::type>::type
+//Otherwise, a regular lvalue-to-rvalue conversion is applied and the decay type is the same as: remove_cv<remove_reference<T>::type>::type.
+
+//typedef std::decay<int>::type A;           // int
+//typedef std::decay<int&>::type B;          // int
+//typedef std::decay<int&&>::type C;         // int
+//typedef std::decay<const int&>::type D;    // int
+//typedef std::decay<int[2]>::type E;        // int*
+//typedef std::decay<int(int)>::type F;      // int(*)(int)
+
 template<typename T>
 struct recallable_impl {
     template<typename... Args>
