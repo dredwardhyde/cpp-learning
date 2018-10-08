@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 PROJECT(cpp-learning)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 add_executable(lambda lambda.cpp)
 add_executable(date_test date_test.cpp date.h date.cpp)
+add_executable(accumulator accumulator.cpp)
