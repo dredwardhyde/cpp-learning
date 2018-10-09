@@ -9,6 +9,7 @@
 void overloaded (const int& x) {std::cout << " overloaded (const int& x) [lvalue] " << x;}
 
 //passes rvalue "0" as lvalue, lvalue "int a = 5" just as it is
+//in template declaration "class" is equal to "typename"
 template <class T> void fn (T&& x) {
     overloaded (std::forward<T>(x));
 }
