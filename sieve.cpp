@@ -19,7 +19,7 @@ void sieve(int n)
     bool prime[n+1];
     memset(prime, true, sizeof(prime));
 
-    //repeat until p <= sqrt(n)
+    //repeat until p <= sqrt(n) because all other numbers will be marked
     for (int p = 2; p * p <= n; p++) {
         //if number is not changed, then is it prime
         if (prime[p]) {
