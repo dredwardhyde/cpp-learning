@@ -19,7 +19,7 @@ void sieve(int n)
     bool prime[n+1];
     memset(prime, true, sizeof(prime));
 
-    //repeat until p <= sqrt(n) because all other numbers will be marked
+    //repeat until p <= sqrt(n) because all other numbers will be marked as false
     for (int p = 2; p * p <= n; p++) {
         //if number is not changed, then is it prime
         if (prime[p]) {
@@ -29,6 +29,7 @@ void sieve(int n)
         }
     }
 
+    //print all remaining marked as true numbers
     for (int p = 2; p <= n; p++)
         if (prime[p])
             std::cout << p << " ";
