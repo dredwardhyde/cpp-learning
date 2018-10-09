@@ -61,6 +61,12 @@ template <typename T> void swapWithCast(T& a, T& b)
     Now "tmp" is empty:
 
     After second swap: a = lol b = kek
+
+    Now "a" is empty:
+    Now "b" is empty:
+    Now "tmp" is empty:
+
+    After third swap: a = kek b = lol
  */
 int main(){
 
