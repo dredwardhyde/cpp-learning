@@ -5,7 +5,7 @@
 #include <thread>
 #include <atomic>
 #include <string>
-#include <iostream>
+#include <cassert>
 
 std::atomic<std::string*> ptr;
 std::atomic<std::string*> ptr2;
@@ -40,9 +40,8 @@ void consumer() {
      */
     while (!(p3 = ptr2.load(std::memory_order_consume)));
 
-    std::cout << *p3  << std::endl;
-    std::cout << data << std::endl; // may or may not be 42: data does not carry dependency from ptr2 (42 on Intel x86)
-
+    assert(*p3 == "Hello");
+    assert(data == 42); // may or may not be 42: data does not carry dependency from ptr2 (42 on Intel x86)
     /*
      * A load operation with this memory order performs the acquire operation on the
      * affected memory location: NO READS OR WRITES IN THE CURRENT THREAD can be
@@ -51,8 +50,8 @@ void consumer() {
      */
     while (!(p2 = ptr.load(std::memory_order_acquire)));
 
-    std::cout << *p2  << std::endl;
-    std::cout << data << std::endl; // must be 42
+    assert(*p2 == "Hello");
+    assert(data == 42);  // must be 42
 }
 
 int main() {
