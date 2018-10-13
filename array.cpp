@@ -94,7 +94,19 @@ std::ostream& operator<<(std::ostream& output, const Array& a){
     return output; // enables cout << x << y
 }
 
+/*
+    Original: 0  0  0  0  0  0  0
 
+    Modified: 1  0  0  5  0  0  0
+
+    Copied: 1  0  0  5  0  0  0
+
+    (copied == integers): 1
+
+    Assigned from copied: 1  0  0  5  0  0  0
+
+    Modified copied: 1  0  0  5  0  0  7
+ */
 int main() {
     Array integers{7};
     std::cout << "Original: " << integers << std::endl;
