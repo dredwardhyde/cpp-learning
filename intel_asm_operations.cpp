@@ -84,6 +84,6 @@ int main() {
     cout << "After cmpxchg(30, &b, 15) b = " << b << endl << endl;
 
     //prints 13
-    cout << "Direct all to asm from cpp add(6, 7): " << add(6, 7) << endl;
+    cout << "Direct call to asm from cpp add(6, 7): " << add(6, 7) << endl;
 
 }
