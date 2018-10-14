@@ -10,7 +10,12 @@ extern "C" double floatadd(double, double);
 // pure assembly function
 // args will be rdi, rsi
 asm(
+#ifdef __APPLE__
 "_add:\n"
+#endif
+#if defined(__linux__) || defined(__unix__)
+"add:\n"
+#endif
 "  lea (%rdi, %rsi), %rax\n"
 "  movq %rax,%rdi\n"
 "  ret\n"
@@ -18,7 +23,12 @@ asm(
 
 
 // addsd: https://www.felixcloutier.com/x86/ADDSD.html
+#ifdef __APPLE__
 asm("_floatadd:\n"
+#endif
+#if defined(__linux__) || defined(__unix__)
+asm("floatadd:\n"
+#endif
     "    addsd %xmm1,%xmm0\n"
     "    ret\n");
 
