@@ -9,39 +9,43 @@
 #include "array.h"
 
 //default constructor for class Array (default size 10)
-Array::Array(int arraySize)
+template <typename T>
+Array<T>::Array(int arraySize)
             : size{(arraySize > 0 ? static_cast<size_t>(arraySize) : throw std::invalid_argument{"Array size must be greater than 0"})},
-            ptr{new int[size]{}}{
+            ptr{new T[size]{}}{
 }
 
 //copy constructor for class Array:
 //must receive a reference to an Array
-Array::Array(const Array& arrayToCopy)
-            : size{arrayToCopy.size}, ptr{new int[size]} {
+template <typename T>
+Array<T>::Array(const Array& arrayToCopy)
+            : size{arrayToCopy.size}, ptr{new T[size]} {
     for(size_t i{0} ; i < size; ++i){
         ptr[i] = arrayToCopy.ptr[i]; // copy into object
     }
 }
 
 //destructor for class Array
-Array::~Array() {
+template <typename T>
+Array<T>::~Array() {
     delete[] ptr;
 }
-
-size_t Array::getSize() const {
+template <typename T>
+size_t Array<T>::getSize() const {
     return size;
 }
 
 //overloaded assignment operator
 //const return avoids: (a1 = a2) = a3
-const Array& Array::operator=(const Array& right) {
+template <typename T>
+const Array<T>& Array<T>::operator=(const Array<T>& right) {
     if(&right != this){ //avoid self-assignment
         if(size != right.size) {
             //for Arrays of different sizes, deallocate original
             //left-side Array, then allocate new left-side Array
             delete [] ptr; //release space
             size = right.size; //resize this object
-            ptr = new int[size]; //create space for Array copy
+            ptr = new T[size]; //create space for Array copy
         }
         for( size_t i{0}; i < size; ++i){
             ptr[i] = right.ptr[i]; //copy array into object
@@ -49,8 +53,8 @@ const Array& Array::operator=(const Array& right) {
     }
     return *this; // enables x = y = z, for example
 }
-
-bool Array::operator==(const Array & right) const {
+template <typename T>
+bool Array<T>::operator==(const Array<T>& right) const {
     if(size != right.size){
         return false; //arrays of different number of elements
     }
@@ -63,22 +67,24 @@ bool Array::operator==(const Array & right) const {
 
     return true;
 }
-
-int& Array::operator[](int subscript) {
+template <typename T>
+T& Array<T>::operator[](int subscript) {
     if(subscript < 0 || subscript >= size){
         throw std::out_of_range{"Subscript out of range"};
     }
     return ptr[subscript]; //return reference
 }
 
-int Array::operator[](int subscript) const {
+template <typename T>
+T Array<T>::operator[](int subscript) const {
     if(subscript < 0 || subscript >= size){
         throw std::out_of_range{"Subscript out of range"};
     }
     return ptr[subscript]; //return reference
 }
 
-std::istream& operator>>(std::istream& input, Array& a){
+template <typename U>
+std::istream& operator>>(std::istream& input, Array<U>& a){
 
     for(size_t i{0}; i < a.size; ++i) {
         input >> a.ptr[i];
@@ -86,7 +92,8 @@ std::istream& operator>>(std::istream& input, Array& a){
     return input; //enables cin >> x >> y
 }
 
-std::ostream& operator<<(std::ostream& output, const Array& a){
+template <typename U>
+std::ostream& operator<<(std::ostream& output, const Array<U>& a){
     for(size_t i{0}; i < a.size; ++i){
         output << a.ptr[i] << "  ";
     }
@@ -108,7 +115,7 @@ std::ostream& operator<<(std::ostream& output, const Array& a){
     Modified copied: 1  0  0  5  0  0  7
  */
 int main() {
-    Array integers{7};
+    Array<int> integers{7};
     std::cout << "Original: " << integers << std::endl;
 
     integers[0] = 1;
@@ -116,13 +123,13 @@ int main() {
 
     std::cout << "Modified: " <<  integers << std:: endl;
 
-    Array copied{integers};
+    Array<int> copied{integers};
 
     std::cout << "Copied: " << copied << std:: endl;
 
     std::cout << "(copied == integers): " <<  (copied == integers) << std::endl << std::endl;
 
-    Array assigned = copied;
+    Array<int> assigned = copied;
 
     copied[6] = 7;
 

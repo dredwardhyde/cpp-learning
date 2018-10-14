@@ -7,31 +7,34 @@
 
 #include <iostream>
 
+template <typename T>
 class Array {
-    friend std::ostream& operator<<(std::ostream&, const Array&);
-    friend std::istream& operator>>(std::istream&, Array&);
+    template <typename U>
+    friend std::ostream& operator<<(std::ostream&, const Array<U>&);
+    template <typename U>
+    friend std::istream& operator>>(std::istream&, Array<U>&);
 
 public:
-    explicit Array(int = 10); //default constructor
-    Array(const Array&); //copy constructor
-    ~Array(); //destructor
+    explicit Array<T>(int = 10); //default constructor
+    Array<T>(const Array&); //copy constructor
+    ~Array<T>(); //destructor
     size_t getSize() const ; // return size
 
-    const Array& operator=(const Array&); //assignment operator
+    const Array<T>& operator=(const Array<T>&); //assignment operator
     bool operator==(const Array&) const; //equality operator
 
-    bool operator!=(const Array& right) const {
+    bool operator!=(const Array<T>& right) const {
         return ! (*this == right); // invokes Array::operator==
     }
 
     // subscript operator for non-const objects returns modifiable lvalue
-    int& operator[](int);
+    T& operator[](int);
 
     //subscript operator for const objects returns rvalue
-    int operator[](int) const;
+    T operator[](int) const;
 private:
     size_t size;
-    int* ptr;
+    T* ptr;
 };
 
 #endif //CPP_LEARNING_ARRAY_H
