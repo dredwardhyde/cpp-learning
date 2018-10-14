@@ -115,10 +115,15 @@ std::ostream& operator<<(std::ostream& output, const Array<U>& a){
     Modified copied: 1  0  0  5  0  0  7
  */
 int main() {
+
+    std::cout <<"--------------------------INTEGER--------------------------" <<  std::endl;
+
     Array<int> integers{7};
+
     std::cout << "Original: " << integers << std::endl;
 
     integers[0] = 1;
+
     integers[3] = 5;
 
     std::cout << "Modified: " <<  integers << std:: endl;
@@ -136,5 +141,31 @@ int main() {
     std::cout <<"Assigned from copied: " <<  assigned << std::endl;
 
     std::cout <<"Modified copied: " <<  copied << std::endl;
+
+    std::cout <<"--------------------------DOUBLE--------------------------" <<  std::endl;
+
+    Array<double> doubles{7};
+
+    std::cout << "Original: " << doubles << std::endl;
+
+    doubles[0] = 1.5;
+
+    doubles[3] = 5.7;
+
+    std::cout << "Modified: " <<  doubles << std:: endl;
+
+    Array<double> copiedDoubles{doubles};
+
+    std::cout << "Copied: " << copiedDoubles << std:: endl;
+
+    std::cout << "(copied == integers): " <<  (copiedDoubles == doubles) << std::endl << std::endl;
+
+    Array<double> assignedDoubles = copiedDoubles;
+
+    copiedDoubles[6] = 7.7;
+
+    std::cout <<"Assigned from copied: " <<  assignedDoubles << std::endl;
+
+    std::cout <<"Modified copied: " <<  copiedDoubles << std::endl;
 
 }
