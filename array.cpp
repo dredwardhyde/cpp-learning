@@ -102,6 +102,7 @@ std::ostream& operator<<(std::ostream& output, const Array<U>& a){
 }
 
 /*
+    --------------------------INTEGER--------------------------
     Original: 0  0  0  0  0  0  0
 
     Modified: 1  0  0  5  0  0  0
@@ -113,6 +114,19 @@ std::ostream& operator<<(std::ostream& output, const Array<U>& a){
     Assigned from copied: 1  0  0  5  0  0  0
 
     Modified copied: 1  0  0  5  0  0  7
+
+    --------------------------DOUBLE--------------------------
+    Original: 0  0  0  0  0  0  0
+
+    Modified: 1.5  0  0  5.7  0  0  0
+
+    Copied: 1.5  0  0  5.7  0  0  0
+
+    (copied == integers): 1
+
+    Assigned from copied: 1.5  0  0  5.7  0  0  0
+
+    Modified copied: 1.5  0  0  5.7  0  0  7.7
  */
 int main() {
 
