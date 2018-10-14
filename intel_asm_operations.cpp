@@ -6,7 +6,7 @@
 using namespace std;
 
 extern "C" int add(int param1, int param2);
-
+extern "C" double floatadd(double, double);
 // pure assembly function
 // args will be rdi, rsi
 asm(
@@ -15,6 +15,12 @@ asm(
 "  movq %rax,%rdi\n"
 "  ret\n"
 );
+
+
+// addsd: https://www.felixcloutier.com/x86/ADDSD.html
+asm("_floatadd:\n"
+    "    addsd %xmm1,%xmm0\n"
+    "    ret\n");
 
 
 // below inline asm functions
@@ -85,5 +91,10 @@ int main() {
 
     //prints 13
     cout << "Direct call to asm from cpp add(6, 7): " << add(6, 7) << endl;
+
+    double a1 = 1.5;
+    double b2 = 1.2;
+    double c3 = floatadd(a1,b2);
+    printf("Adding two doubles a1 = 1.5 and b2 = 1.2 = %f\n",c3);
 
 }
