@@ -22,8 +22,8 @@ public:
 };
 
 
-void printChild(){
-    std::cout << "From new thread\n";
+void print(std::string& str){
+    std::cout << str;
 }
 
 void printMain(){
@@ -40,7 +40,8 @@ void printMain(){
  */
 int main(){
     try {
-        std::thread t(printChild);
+        std::string str = "From child thread\n";
+        std::thread t(print, std::ref(str));
         thread_guard g(t);
         printMain();
     }catch (std::exception& e){
