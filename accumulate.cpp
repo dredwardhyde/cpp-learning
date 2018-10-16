@@ -19,7 +19,6 @@ struct accumulate_block {
 template<typename Iterator,typename T, typename R, typename F>
 T mapReduce(Iterator first,Iterator last,T init, R function, F reducer) {
     long const length=std::distance(first,last);
-    std::cout << "Length: " << length << std::endl;
     if(!length) return init;
     unsigned long const min_per_thread=25;
     unsigned long const max_threads= (length+min_per_thread-1)/min_per_thread;
@@ -30,7 +29,7 @@ T mapReduce(Iterator first,Iterator last,T init, R function, F reducer) {
     std::vector<std::thread>  threads(num_threads);
     Iterator block_start=first;
     std::cout << "Mappers spawned: " << num_threads << " (in new threads: " << (num_threads - 1) << ")" << std::endl;
-    std::cout << "Mapping main blocks in new threads with size " << block_size << " :" << std::endl;
+    std::cout << "Mapping main blocks in new threads with size " << block_size << "" << std::endl;
     for(unsigned long i=0;i<(num_threads-1);++i) {
         Iterator block_end=block_start;
         std::advance(block_end,block_size);
