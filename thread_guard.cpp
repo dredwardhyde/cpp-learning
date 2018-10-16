@@ -4,6 +4,7 @@
 
 #include <thread>
 #include <iostream>
+#include <vector>
 
 class thread_guard {
 private:
@@ -41,6 +42,10 @@ void print(std::string& str){
     std::cout << str;
 }
 
+void printInt(int i){
+    std::cout << std::to_string(i) + " ";
+}
+
 void printMain(){
     std::cout << "From main thread\n";
     throw std::runtime_error("Exception from main");
@@ -73,4 +78,13 @@ int main(){
     }catch (std::exception& e){
         std::cout << e.what() << std::endl;
     }
+
+    std::cout << "Hardware threads: " << std::thread::hardware_concurrency() << std::endl;
+
+    //Join to multiple threads
+    std::vector<std::thread> threadPool;
+    for(unsigned int i = 0;i < 20; ++i) {
+        threadPool.emplace_back(std::thread(printInt, i));
+    }
+    std::for_each(threadPool.begin(),threadPool.end(), std::mem_fn(&std::thread::join));
 }
