@@ -9,7 +9,7 @@
 #include <functional>
 #include <thread>
 
-bool THROW_ERROR  = false;
+bool THROW_ERROR  = true;
 
 class scoped_thread {
 private:
@@ -26,12 +26,13 @@ public:
 
 template<typename Iterator,typename T, typename R>
 struct accumulate_block {
-    void operator()(Iterator first,Iterator last,T& result, R function, std::exception_ptr& ptr) {
+    void operator()(Iterator first,Iterator last,T& result, R function, std::exception_ptr& ptr, std::atomic<bool>& expWasSet) {
         try {
-            if(ptr) return;
+            if(expWasSet.load(std::memory_order_acquire)) return;
             result = std::accumulate(first,last,result, function);
         }catch (...){
             ptr = std::current_exception();
+            expWasSet.store(true, std::memory_order_release);
         }
     }
 };
@@ -40,6 +41,7 @@ template<typename Iterator,typename T, typename R, typename F>
 T mapReduce(Iterator first,Iterator last,T init, R function, F reducer) {
     static std::exception_ptr teptr = nullptr;
     long const length = std::distance(first, last);
+    std::atomic<bool> expWasSet(false);
     if(!length) return init;
     unsigned long const min_per_thread = 25;
     unsigned long const max_threads = (length+min_per_thread - 1) / min_per_thread;
@@ -52,12 +54,12 @@ T mapReduce(Iterator first,Iterator last,T init, R function, F reducer) {
     for(unsigned long i = 0;i < (num_threads - 1); ++i) {
         Iterator block_end = block_start;
         std::advance(block_end, block_size);
-        threads.emplace(threads.begin() + i, std::unique_ptr<scoped_thread>(new scoped_thread(std::thread(accumulate_block<Iterator,T, R>(), block_start,block_end,std::ref(results[i]), function, std::ref(teptr)))));
+        threads.emplace(threads.begin() + i, std::unique_ptr<scoped_thread>(new scoped_thread(std::thread(accumulate_block<Iterator,T, R>(), block_start,block_end,std::ref(results[i]), function, std::ref(teptr), std::ref(expWasSet)))));
         block_start = block_end;
-        if(teptr) std::rethrow_exception(teptr);
+        if(expWasSet.load(std::memory_order_acquire)) std::rethrow_exception(teptr);
     }
-    threads.emplace(threads.end(), std::unique_ptr<scoped_thread>(new scoped_thread(std::thread(accumulate_block<Iterator,T, R>(),block_start,last,std::ref(results[num_threads-1]), function, std::ref(teptr)))));
-    if(teptr) std::rethrow_exception(teptr);
+    threads.emplace(threads.end(), std::unique_ptr<scoped_thread>(new scoped_thread(std::thread(accumulate_block<Iterator,T, R>(),block_start,last,std::ref(results[num_threads-1]), function, std::ref(teptr), std::ref(expWasSet)))));
+    if(expWasSet.load(std::memory_order_acquire)) std::rethrow_exception(teptr);
     return std::accumulate(results.begin(), results.end(), init, reducer);
 }
 
