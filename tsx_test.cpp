@@ -111,40 +111,59 @@ void* f2(){
                capacities- last_capacities, debugs - last_debugs, conflicts - last_conflicts,
                zeros- last_zeros);
 
-        std::this_thread::sleep_for(1s);
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 
 /*  macOS 10.13.6 (17G65) MacBook Pro 2017 Intel(R) Core(TM) i7-7820HQ CPU @ 2.90GHz  with  __attribute__((aligned(64)))
 
-    txs	382	        aborts		406	        faileds	11	    capacities	8	    debugs	0	conflit	398	        zero	0
-    txs	9938799	    aborts		11409631	faileds	62368	capacities	60973	debugs	0	conflit	11345870	zero	2788
-    txs	10044216	aborts		11706596	faileds	61048	capacities	60203	debugs	0	conflit	11643725	zero	2668
-    txs	10102177	aborts		11463549	faileds	60199	capacities	59161	debugs	0	conflit	11401893	zero	2495
-    txs	10242518	aborts		12230484	faileds	62859	capacities	62507	debugs	0	conflit	12166668	zero	1309
-    txs	10268156	aborts		12240786	faileds	65116	capacities	64658	debugs	0	conflit	12174662	zero	1467
-    txs	10255116	aborts		12352714	faileds	60965	capacities	60643	debugs	0	conflit	12290737	zero	1333
-    txs	10179717	aborts		12085221	faileds	54023	capacities	53597	debugs	0	conflit	12030123	zero	1501
-    txs	10192107	aborts		12027243	faileds	58952	capacities	58206	debugs	0	conflit	11967365	zero	1672
-    txs	10045203	aborts		11795694	faileds	52204	capacities	51631	debugs	0	conflit	11742077	zero	1986
-    txs	10271984	aborts		12181318	faileds	57267	capacities	56898	debugs	0	conflit	12123164	zero	1256
-    txs	9967581	    aborts		11467056	faileds	53035	capacities	52007	debugs	0	conflit	11412776	zero	2273
-    txs	9984704	    aborts		11267512	faileds	61302	capacities	59626	debugs	0	conflit	11204323	zero	3565
+    txs	382	        aborts		406	        failed	11	    capacity	8	    debug	0	conflict	398	        zero	0
+    txs	9938799	    aborts		11409631	failed	62368	capacity	60973	debug	0	conflict	11345870	zero	2788
+    txs	10044216	aborts		11706596	failed	61048	capacity	60203	debug	0	conflict	11643725	zero	2668
+    txs	10102177	aborts		11463549	failed	60199	capacity	59161	debug	0	conflict	11401893	zero	2495
+    txs	10242518	aborts		12230484	failed	62859	capacity	62507	debug	0	conflict	12166668	zero	1309
+    txs	10268156	aborts		12240786	failed	65116	capacity	64658	debug	0	conflict	12174662	zero	1467
+    txs	10255116	aborts		12352714	failed	60965	capacity	60643	debug	0	conflict	12290737	zero	1333
+    txs	10179717	aborts		12085221	failed	54023	capacity	53597	debug	0	conflict	12030123	zero	1501
+    txs	10192107	aborts		12027243	failed	58952	capacity	58206	debug	0	conflict	11967365	zero	1672
+    txs	10045203	aborts		11795694	failed	52204	capacity	51631	debug	0	conflict	11742077	zero	1986
+    txs	10271984	aborts		12181318	failed	57267	capacity	56898	debug	0	conflict	12123164	zero	1256
+    txs	9967581	    aborts		11467056	failed	53035	capacity	52007	debug	0	conflict	11412776	zero	2273
+    txs	9984704	    aborts		11267512	failed	61302	capacity	59626	debug	0	conflict	11204323	zero	3565
+
+    macOS 10.13.6 (17G65) MacBook Pro 2017 Intel(R) Core(TM) i7-7820HQ CPU @ 2.90GHz  without  __attribute__((aligned(64)))
+
+    txs	382	        aborts		435	        failed	7	    capacity	6	    debug	0	conflict	429	        zero	0
+    txs	9914805	    aborts		11433580	failed	147347	capacity	146475	debug	0	conflict	11283945	zero	3160
+    txs	10233735	aborts		11063411	failed	157595	capacity	156086	debug	0	conflict	10902825	zero	4500
+    txs	9852471	    aborts		11659267	failed	159909	capacity	159337	debug	0	conflict	11497435	zero	2495
+    txs	10079455	aborts		11959584	failed	161886	capacity	161400	debug	0	conflict	11796161	zero	2023
+    txs	10089464	aborts		11871225	failed	149372	capacity	148824	debug	0	conflict	11719350	zero	3051
+    txs	10201504	aborts		12223146	failed	143450	capacity	143215	debug	0	conflict	12078538	zero	1394
+    txs	9929631	    aborts		11604689	failed	141718	capacity	140985	debug	0	conflict	11461114	zero	2589
+    txs	9995103	    aborts		11817224	failed	130237	capacity	129785	debug	0	conflict	11684999	zero	2440
+    txs	10039205	aborts		11850755	failed	140056	capacity	139586	debug	0	conflict	11709253	zero	1916
+    txs	9891612	    aborts		11587555	failed	140469	capacity	139802	debug	0	conflict	11444618	zero	3135
+    txs	10056375	aborts		11979285	failed	138719	capacity	138402	debug	0	conflict	11839034	zero	1849
+    txs	10009238	aborts		11831077	failed	126188	capacity	125854	debug	0	conflict	11702052	zero	3171
+    txs	10049117	aborts		11906881	failed	134574	capacity	134260	debug	0	conflict	11770969	zero	1652
+    txs	10022979	aborts		11755648	failed	114815	capacity	114490	debug	0	conflict	11639463	zero	1695
+    txs	10130644	aborts		12047694	failed	145462	capacity	145119	debug	0	conflict	11900804	zero	1772
 
 
     Microsoft Windows [Version 10.0.17134.345]  Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz  without  __attribute__((aligned(64)))
 
-    txs 22812008    aborts      91656       faileds 1839    capacities  1817    debugs  0   conflit 85155	    zero    4684
-    txs 22680349    aborts      103298      faileds 1175    capacities  1160    debugs  0   conflit 98474	    zero    3664
-    txs 22247197    aborts      101577      faileds 2080    capacities  2044    debugs  0   conflit 91360	    zero    8173
-    txs 22366722    aborts      101092      faileds 942     capacities  928     debugs  0   conflit 96300	    zero    3863
-    txs 22556846    aborts      96019       faileds 2445    capacities  2385    debugs  0   conflit 89333	    zero    4302
-    txs 22508284    aborts      100531      faileds 1760    capacities  1737    debugs  0   conflit 90645	    zero    8149
-    txs 22709019    aborts      95737       faileds 963     capacities  952     debugs  0   conflit 89047	    zero    5738
-    txs 22617079    aborts      100150      faileds 845     capacities  833     debugs  0   conflit 95744	    zero    3573
-    txs 22487583    aborts      98663       faileds 1165    capacities  1153    debugs  0   conflit 93646	    zero    3864
-    txs 22537181    aborts      87534       faileds 1942    capacities  1888    debugs  0   conflit 81810	    zero    3836
-    txs 23394449    aborts      91627       faileds 1441    capacities  1402    debugs  0   conflit 86781	    zero    3444
+    txs 22812008    aborts      91656       failed 1839    capacity  1817    debug  0   conflict 85155	    zero    4684
+    txs 22680349    aborts      103298      failed 1175    capacity  1160    debug  0   conflict 98474	    zero    3664
+    txs 22247197    aborts      101577      failed 2080    capacity  2044    debug  0   conflict 91360	    zero    8173
+    txs 22366722    aborts      101092      failed 942     capacity  928     debug  0   conflict 96300	    zero    3863
+    txs 22556846    aborts      96019       failed 2445    capacity  2385    debug  0   conflict 89333	    zero    4302
+    txs 22508284    aborts      100531      failed 1760    capacity  1737    debug  0   conflict 90645	    zero    8149
+    txs 22709019    aborts      95737       failed 963     capacity  952     debug  0   conflict 89047	    zero    5738
+    txs 22617079    aborts      100150      failed 845     capacity  833     debug  0   conflict 95744	    zero    3573
+    txs 22487583    aborts      98663       failed 1165    capacity  1153    debug  0   conflict 93646	    zero    3864
+    txs 22537181    aborts      87534       failed 1942    capacity  1888    debug  0   conflict 81810	    zero    3836
+    txs 23394449    aborts      91627       failed 1441    capacity  1402    debug  0   conflict 86781	    zero    3444
  */
 
 int main(){
