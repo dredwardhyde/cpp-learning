@@ -115,7 +115,7 @@ void* f2(){
     }
 }
 
-/*  macOS 10.13.6 (17G65) MacBook Pro 2017 Intel(R) Core(TM) i7-7820HQ CPU @ 2.90GHz
+/*  macOS 10.13.6 (17G65) MacBook Pro 2017 Intel(R) Core(TM) i7-7820HQ CPU @ 2.90GHz  with  __attribute__((aligned(64)))
 
     txs	382	        aborts		406	        faileds	11	    capacities	8	    debugs	0	conflit	398	        zero	0
     txs	9938799	    aborts		11409631	faileds	62368	capacities	60973	debugs	0	conflit	11345870	zero	2788
@@ -132,7 +132,7 @@ void* f2(){
     txs	9984704	    aborts		11267512	faileds	61302	capacities	59626	debugs	0	conflit	11204323	zero	3565
 
 
-    Microsoft Windows [Version 10.0.17134.345]  Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz
+    Microsoft Windows [Version 10.0.17134.345]  Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz  without  __attribute__((aligned(64)))
 
     txs 22812008    aborts      91656       faileds 1839    capacities  1817    debugs  0   conflit 85155	    zero    4684
     txs 22680349    aborts      103298      faileds 1175    capacities  1160    debugs  0   conflit 98474	    zero    3664
