@@ -5,7 +5,6 @@
 #include <emmintrin.h>
 #include <immintrin.h>
 #include <thread>
-#include <unistd.h>
 #include <iostream>
 
 using namespace std;
@@ -15,7 +14,7 @@ using namespace std;
 typedef struct Account{
     long balance;
     long number;
-} __attribute__((aligned(64))) account_t;
+} account_t;
 
 typedef struct Bank{
     account_t* accounts;
@@ -112,7 +111,7 @@ void* f2(){
                capacities- last_capacities, debugs - last_debugs, conflicts - last_conflicts,
                zeros- last_zeros);
 
-        sleep(1);
+        std::this_thread::sleep_for(1s);
     }
 }
 
@@ -131,6 +130,21 @@ void* f2(){
     txs	10271984	aborts		12181318	faileds	57267	capacities	56898	debugs	0	conflit	12123164	zero	1256
     txs	9967581	    aborts		11467056	faileds	53035	capacities	52007	debugs	0	conflit	11412776	zero	2273
     txs	9984704	    aborts		11267512	faileds	61302	capacities	59626	debugs	0	conflit	11204323	zero	3565
+
+
+    Microsoft Windows [Version 10.0.17134.345]  Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz
+
+    txs 22812008    aborts      91656       faileds 1839    capacities  1817    debugs  0   conflit 85155	    zero    4684
+    txs 22680349    aborts      103298      faileds 1175    capacities  1160    debugs  0   conflit 98474	    zero    3664
+    txs 22247197    aborts      101577      faileds 2080    capacities  2044    debugs  0   conflit 91360	    zero    8173
+    txs 22366722    aborts      101092      faileds 942     capacities  928     debugs  0   conflit 96300	    zero    3863
+    txs 22556846    aborts      96019       faileds 2445    capacities  2385    debugs  0   conflit 89333	    zero    4302
+    txs 22508284    aborts      100531      faileds 1760    capacities  1737    debugs  0   conflit 90645	    zero    8149
+    txs 22709019    aborts      95737       faileds 963     capacities  952     debugs  0   conflit 89047	    zero    5738
+    txs 22617079    aborts      100150      faileds 845     capacities  833     debugs  0   conflit 95744	    zero    3573
+    txs 22487583    aborts      98663       faileds 1165    capacities  1153    debugs  0   conflit 93646	    zero    3864
+    txs 22537181    aborts      87534       faileds 1942    capacities  1888    debugs  0   conflit 81810	    zero    3836
+    txs 23394449    aborts      91627       faileds 1441    capacities  1402    debugs  0   conflit 86781	    zero    3444
  */
 
 int main(){
