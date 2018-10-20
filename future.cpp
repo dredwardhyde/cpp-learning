@@ -10,7 +10,10 @@ bool is_prime (int x) {
     for (int i=2; i<x; ++i) if (x%i==0) return false;
     return true;
 }
-
+/*
+    checking, please wait..........
+    444444443 is prime.
+ */
 int main () {
     std::future<bool> fut = std::async (is_prime,444444443);
     std::cout << "checking, please wait";
