@@ -33,3 +33,5 @@ add_executable(threadsafe_queue threadsafe_queue_test.h threadsafe_queue_test.cp
 add_executable(future future.cpp)
 add_executable(promise promise.cpp)
 add_executable(shared_future shared_future.cpp)
+add_executable(barrier_not_working barrier_not_working.cpp)
+add_executable(fence_with_relaxed fence_with_relaxed.cpp)
