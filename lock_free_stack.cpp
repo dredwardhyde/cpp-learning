@@ -96,7 +96,7 @@ void consumer(lock_free_stack<int>* stack){
 // prints
 // 191817   161514   131211   1098   765   432   1019   181716   151413   121110   987   654   321   01918   171615   141312   11109   876   543   210   destruction of stack
 int main(){
-    lock_free_stack<int>* stack = new lock_free_stack<int>();
+    auto* stack = new lock_free_stack<int>();
     std::thread a(producer, std::ref(stack));
     std::thread b(producer, std::ref(stack));
     std::thread e(producer, std::ref(stack));
