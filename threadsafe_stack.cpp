@@ -91,7 +91,6 @@ void consumer(threadsafe_stack<int>* stack){
 
 // Pushing: 13974252 ns
 // Popping: 25598881 ns
-
 int main(){
     auto* stack = new threadsafe_stack<int>();
     auto start = std::chrono::high_resolution_clock::now();
