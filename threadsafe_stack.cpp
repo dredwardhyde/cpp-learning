@@ -77,26 +77,42 @@ public:
     }
 };
 
-void producer(threadsafe_stack<int>& stack){
-    for(int i = 0; i < 20;i++){
-        stack.push(i);
+void producer(threadsafe_stack<int>* stack){
+    for(int i = 0; i < 1000;i++){
+        stack->push(i);
     }
 }
 
-void consumer(threadsafe_stack<int>& stack){
-    while(!stack.empty()){
-        std::cout << *stack.pop() << std::endl << std::flush;
+void consumer(threadsafe_stack<int>* stack){
+    while(!stack->empty()){
+         *stack->pop();
     }
 }
+
+// Pushing: 13974252 ns
+// Popping: 25598881 ns
 
 int main(){
-
-    threadsafe_stack<int> stack;
-
+    auto* stack = new threadsafe_stack<int>();
+    auto start = std::chrono::high_resolution_clock::now();
     std::thread a(producer, std::ref(stack));
     std::thread b(producer, std::ref(stack));
-    std::thread c(consumer, std::ref(stack));
+    std::thread e(producer, std::ref(stack));
     a.join();
     b.join();
+    e.join();
+    auto done = std::chrono::high_resolution_clock::now();
+    long resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
+    std::cout << "Pushing: " << resultTime << std::endl;
+    start = std::chrono::high_resolution_clock::now();
+    std::thread c(consumer, std::ref(stack));
+    std::thread d(consumer, std::ref(stack));
+    std::thread f(consumer, std::ref(stack));
     c.join();
+    d.join();
+    f.join();
+    done = std::chrono::high_resolution_clock::now();
+    resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
+    std::cout << "Popping: " << resultTime << std::endl;
+    delete stack;
 }

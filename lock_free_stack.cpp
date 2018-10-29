@@ -83,31 +83,40 @@ public:
 };
 
 void producer(lock_free_stack<int>* stack){
-    for(int i = 0; i < 20;i++){
+    for(int i = 0; i < 1000;i++){
         stack->push(i);
     }
 }
 
 void consumer(lock_free_stack<int>* stack){
     while(std::shared_ptr<int> res = stack->pop()){
-        std::cout << *res << " ";
+
     }
 }
-// prints
-// 191817   161514   131211   1098   765   432   1019   181716   151413   121110   987   654   321   01918   171615   141312   11109   876   543   210   destruction of stack
+
+// Pushing: 420863 ns
+// Popping: 934424 ns
 int main(){
     auto* stack = new lock_free_stack<int>();
+    auto start = std::chrono::high_resolution_clock::now();
     std::thread a(producer, std::ref(stack));
     std::thread b(producer, std::ref(stack));
     std::thread e(producer, std::ref(stack));
     a.join();
     b.join();
     e.join();
+    auto done = std::chrono::high_resolution_clock::now();
+    long resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
+    std::cout << "Pushing: " << resultTime << std::endl;
+    start = std::chrono::high_resolution_clock::now();
     std::thread c(consumer, std::ref(stack));
     std::thread d(consumer, std::ref(stack));
     std::thread f(consumer, std::ref(stack));
     c.join();
     d.join();
     f.join();
+    done = std::chrono::high_resolution_clock::now();
+    resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
+    std::cout << "Popping: " << resultTime << std::endl;
     delete stack;
 }
