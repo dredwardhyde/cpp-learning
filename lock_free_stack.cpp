@@ -19,6 +19,8 @@ template<typename T>
 class lock_free_stack {
 private:
     struct node;
+    // sizeof(counted_node_ptr) == 16 bytes = 8 for ptr + 4 for external_count + 4 padding
+    // head.is_lock_free() == 1
     struct counted_node_ptr {
         int external_count;
         node* ptr;
@@ -43,7 +45,7 @@ private:
     }
 public:
     ~lock_free_stack() {
-        std::cout << "Destruction" << std::endl; //I don't know why it is important, without this std::cout I've got EXC_BAD_ACCESS (code=2, address=0x1011d9000)
+        std::cout << "destruction of stack" << std::endl;
         while(pop());
     }
     void push(T const& data) {
@@ -80,26 +82,32 @@ public:
     }
 };
 
-void producer(lock_free_stack<int>& stack){
+void producer(lock_free_stack<int>* stack){
     for(int i = 0; i < 20;i++){
-        stack.push(i);
+        stack->push(i);
     }
 }
 
-void consumer(lock_free_stack<int>& stack){
-    while(std::shared_ptr<int> res = stack.pop()){
-        std::cout << *res << std::endl << std::flush;
+void consumer(lock_free_stack<int>* stack){
+    while(std::shared_ptr<int> res = stack->pop()){
+        std::cout << *res << " ";
     }
 }
-
+// prints
+// 191817   161514   131211   1098   765   432   1019   181716   151413   121110   987   654   321   01918   171615   141312   11109   876   543   210   destruction of stack
 int main(){
-    lock_free_stack<int> stack;
+    lock_free_stack<int>* stack = new lock_free_stack<int>();
     std::thread a(producer, std::ref(stack));
     std::thread b(producer, std::ref(stack));
+    std::thread e(producer, std::ref(stack));
     a.join();
     b.join();
+    e.join();
     std::thread c(consumer, std::ref(stack));
     std::thread d(consumer, std::ref(stack));
+    std::thread f(consumer, std::ref(stack));
     c.join();
     d.join();
+    f.join();
+    delete stack;
 }
