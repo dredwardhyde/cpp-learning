@@ -70,6 +70,9 @@ public:
         new_node.ptr = new node(data);
         new_node.external_count = 1;
         new_node.ptr->next = head.load(std::memory_order_relaxed);
+        // Because the only atomic operation in the push() is the compare_exchange_weak(),
+        // and you need a release operation to get a happens- before relationship between threads,
+        // the compare_exchange_weak() must be std:: memory_order_release or stronger.
         while(!head.compare_exchange_weak(
                 new_node.ptr->next, new_node,
                 std::memory_order_release,
@@ -78,6 +81,7 @@ public:
     std::shared_ptr<T> pop() {
         counted_node_ptr old_head = head.load(std::memory_order_relaxed);
         for(;;) {
+            //In order to get the happens-before relationship you need, you must have an operation that’s std::memory_order_acquire or stronger before the access to next.
             increase_head_count(old_head);
             // Once the count has been increased, you can safely dereference the ptr field of
             // the value loaded from head in order to access the pointed-to node
@@ -86,7 +90,11 @@ public:
             if(!ptr) {
                 return std::shared_ptr<T>();
             }
-            //If the pointer isn’t a null pointer, you can try to remove the node by a compare_exchange_strong() call on head and node next to head.
+            // If the pointer isn’t a null pointer, you can try to remove the node by a compare_exchange_strong() call on head and node next to head.
+
+            // The pointer you dereference to access the next field is the old value read by the compare_exchange_strong() in increase_head_count(),
+            // so you need the ordering on that if it succeeds. As with the call in push(), if the exchange fails, you just loop again,
+            // so you can use relaxed ordering on failure
             if(head.compare_exchange_strong(old_head,ptr->next,std::memory_order_relaxed)) {
                 // If the compare_exchange_strong() succeeds, you’ve taken ownership of the node and can swap out the data in preparation for returning it.
                 // This ensures that the data isn’t kept alive just because other threads accessing the stack happen to still have pointers to its node.
