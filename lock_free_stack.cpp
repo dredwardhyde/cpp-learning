@@ -96,17 +96,16 @@ public:
                 // in which case you can delete the node. It’s important to note that the value you add is actually two less than the external count
                 // You’ve removed the node from the list, so you drop one off the count for that,
                 // and you’re no longer accessing the node from this thread, so you drop another off the count for that.
-
-                // Previously you increased old_head.external_count by 1 so you have to add -1 to internal_count to decrease it by one
-                // So if that's not the case and internal_count != -count_increase - there is another node that references it at this point
                 int const count_increase = old_head.external_count - 2;
                 // Then you can add the external count to the internal count on the node with an atomic fetch_add
+
+                // fetch_add RETURNS THE VALUE IMMEDIATELY PRECEDING THE EFFECTS OF THIS FUNCTION SO THIS CHECK IF CURRENT VALUE IS ZERO
                 if(ptr->internal_count.fetch_add(count_increase,std::memory_order_release) == -count_increase) {
                     delete ptr;
                 }
                 // Whether or not you deleted the node, you’ve finished, so you can return the data
                 return res;
-            } else if(ptr->internal_count.fetch_add(-1,std::memory_order_relaxed) == 1) {
+            } else if(ptr->internal_count.fetch_add(-1,std::memory_order_relaxed) == 1) { //Added -1 but previous value was 1 so now it's 0 - we can delete node
                 // If the compare/exchange fails, another thread removed your node before you did,
                 // or another thread added a new node to the stack. Either way, you need to start again
                 // with the fresh value of head returned by the compare/exchange call. But first you must
