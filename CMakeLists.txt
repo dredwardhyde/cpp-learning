@@ -40,3 +40,4 @@ add_executable(threadsafe_queue_tuned threadsafe_queue_tuned.h threadsafe_queue_
 add_executable(lock_free_stack lock_free_stack.cpp)
 add_executable(lock_free_test lock_free_test.cpp)
 add_executable(threadsafe_list_iterator threadsafe_list_iterator.cpp)
+add_executable(lock_free_queue lock_free_queue.cpp)
