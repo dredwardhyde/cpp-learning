@@ -35,7 +35,7 @@ private:
             new_count.external_counters=2;
             count.store(new_count);
 
-            counted_node_ptr next_node={0};
+            counted_node_ptr next_node={0, nullptr};
             next.store(next_node);
         }
 
@@ -182,7 +182,7 @@ public:
             if(old_tail.ptr->data.compare_exchange_strong(
                     old_data,new_data.get()))
             {
-                counted_node_ptr old_next={0};
+                counted_node_ptr old_next={0, nullptr};
                 if(!old_tail.ptr->next.compare_exchange_strong(
                         old_next,new_next))
                 {
@@ -195,7 +195,7 @@ public:
             }
             else
             {
-                counted_node_ptr old_next={0};
+                counted_node_ptr old_next={0, nullptr};
                 if(old_tail.ptr->next.compare_exchange_strong(
                         old_next,new_next))
                 {
