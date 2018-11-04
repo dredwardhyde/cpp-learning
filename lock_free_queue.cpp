@@ -139,6 +139,12 @@ public:
             } else {
                 counted_node_ptr old_next = {0, 0, nullptr};
                 if(old_tail.ptr->next.compare_exchange_strong(old_next,new_next)) {
+                    old_next = new_next;
+                    // Possible memory leak here?
+                    // Basically what I need here is to atomically compare new_next.ptr with nullptr and swap reference to new node, if false - delete that new node
+                    // node* dummy = new node
+                    // if(!new_next.ptr.compare_exchange_strong(nullptr, dummy)) delete dummy;
+
                     // Leaks MSVC
                     // 2222222Pushing: 8322268
                     // Popping: 0
@@ -147,11 +153,6 @@ public:
                     // 222222222222222222222222222222222222222222222222Pushing: 3475784
                     // Popping: 44
                     if(new_next.ptr != nullptr) std::cout << "2"; // not null
-                    old_next = new_next;
-                    // Possible memory leak here?
-                    // Basically what I need here is to atomically compare new_next.ptr with nullptr and swap reference to new node, if false - delete that new node
-                    // node* dummy = new node
-                    // if(!new_next.ptr.compare_exchange_strong(nullptr, dummy)) delete dummy;
                     new_next.ptr = new node; //and then allocate new node and we've got memory leak
                 }
                 set_new_tail(old_tail, old_next);
