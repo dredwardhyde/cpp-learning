@@ -160,7 +160,64 @@ void consumer(lock_free_queue<int>* stack){
         //std::cout << *res << std:: endl;
     }
 }
+/*
+ *  Visual Leak Detector read settings from: C:\Program Files (x86)\Visual Leak Detector\vld.ini
+    Visual Leak Detector Version 2.5.1 installed.
+    Pushing: 36984289
+    Popping: 285
+    WARNING: Visual Leak Detector detected memory leaks!
+    ---------- Block 9767 at 0x00000000E9D81730: 40 bytes ----------
+      Leak Hash: 0x5BC9CD4E, Count: 1, Total 40 bytes
+      Call Stack (TID 19396):
+        ucrtbased.dll!malloc()
+        f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): lock_free_queue.exe!operator new() + 0xA bytes
+        c:\users\tony\cpp-learning\lock_free_queue.cpp (124): lock_free_queue.exe!lock_free_queue<int>::push() + 0x1A bytes
+        c:\users\tony\cpp-learning\lock_free_queue.cpp (155): lock_free_queue.exe!producer()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\type_traits (1377): lock_free_queue.exe!std::_Invoker_functor::_Call<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int> * __ptr64> >()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\type_traits (1445): lock_free_queue.exe!std::invoke<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int> * __ptr64> >()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (241): lock_free_queue.exe!std::_LaunchPad<std::unique_ptr<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int>* __ptr64> >,std::default_delete<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (250): lock_free_queue.exe!std::_LaunchPad<std::unique_ptr<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int>* __ptr64> >,std::default_delete<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (233): lock_free_queue.exe!std::_LaunchPad<std::unique_ptr<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int>* __ptr64> >,std::default_delete<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (210): lock_free_queue.exe!std::_Pad::_Call_func()
+        ucrtbased.dll!register_onexit_function() + 0x4A8 bytes
+        ucrtbased.dll!register_onexit_function() + 0x111 bytes
+        KERNEL32.DLL!BaseThreadInitThunk() + 0x14 bytes
+        ntdll.dll!RtlUserThreadStart() + 0x21 bytes
+      Data:
+        00 00 00 00    00 00 00 00    02 00 00 00    CD CD CD CD     ........ ........
+        00 00 00 00    CD CD CD CD    01 00 00 00    00 00 00 00     ........ ........
+        90 1B D8 E9    46 02 00 00                                   ....F... ........
 
+
+    ---------- Block 9766 at 0x00000000E9D817A0: 40 bytes ----------
+      Leak Hash: 0x5BC9CD4E, Count: 1, Total 40 bytes
+      Call Stack (TID 21908):
+        ucrtbased.dll!malloc()
+        f:\dd\vctools\crt\vcstartup\src\heap\new_scalar.cpp (19): lock_free_queue.exe!operator new() + 0xA bytes
+        c:\users\tony\cpp-learning\lock_free_queue.cpp (124): lock_free_queue.exe!lock_free_queue<int>::push() + 0x1A bytes
+        c:\users\tony\cpp-learning\lock_free_queue.cpp (155): lock_free_queue.exe!producer()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\type_traits (1377): lock_free_queue.exe!std::_Invoker_functor::_Call<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int> * __ptr64> >()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\type_traits (1445): lock_free_queue.exe!std::invoke<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int> * __ptr64> >()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (241): lock_free_queue.exe!std::_LaunchPad<std::unique_ptr<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int>* __ptr64> >,std::default_delete<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (250): lock_free_queue.exe!std::_LaunchPad<std::unique_ptr<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int>* __ptr64> >,std::default_delete<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (233): lock_free_queue.exe!std::_LaunchPad<std::unique_ptr<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_free_queue<int>* __ptr64> >,std::default_delete<std::tuple<void (__cdecl*)(lock_free_queue<int> * __ptr64),std::reference_wrapper<lock_()
+        c:\program files (x86)\microsoft visual studio 14.0\vc\include\thr\xthread (210): lock_free_queue.exe!std::_Pad::_Ca
+    ll_func()
+        ucrtbased.dll!register_onexit_function() + 0x4A8 bytes
+        ucrtbased.dll!register_onexit_function() + 0x111 bytes
+        KERNEL32.DLL!BaseThreadInitThunk() + 0x14 bytes
+        ntdll.dll!RtlUserThreadStart() + 0x21 bytes
+      Data:
+        00 00 00 00    00 00 00 00    01 00 00 00    CD CD CD CD     ........ ........
+        00 00 00 00    CD CD CD CD    01 00 00 00    00 00 00 00     ........ ........
+        30 17 D8 E9    46 02 00 00                                   0...F... ........
+
+        Visual Leak Detector detected 2 memory leaks (184 bytes).
+        Largest number used: 452988 bytes.
+        Total allocations: 888804 bytes.
+        Visual Leak Detector is now exiting.
+
+ */
 int main(){
     auto* queue = new lock_free_queue<int>();
     auto start = std::chrono::high_resolution_clock::now();
@@ -170,16 +227,23 @@ int main(){
     a.join();
     b.join();
     e.join();
-    auto done = std::chrono::high_resolution_clock::now();
-    long resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
-    std::cout << "Pushing: " << resultTime << std::endl;
-    start = std::chrono::high_resolution_clock::now();
+    std::thread j(producer, std::ref(queue));
+    std::thread k(producer, std::ref(queue));
+    std::thread l(producer, std::ref(queue));
     std::thread c(consumer, std::ref(queue));
     std::thread d(consumer, std::ref(queue));
     std::thread f(consumer, std::ref(queue));
     c.join();
     d.join();
     f.join();
+    j.join();
+    k.join();
+    l.join();
+    auto done = std::chrono::high_resolution_clock::now();
+    long resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
+    std::cout << "Pushing: " << resultTime << std::endl;
+    start = std::chrono::high_resolution_clock::now();
+
     done = std::chrono::high_resolution_clock::now();
     resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
     std::cout << "Popping: " << resultTime << std::endl;
