@@ -41,3 +41,8 @@ add_executable(lock_free_stack lock_free_stack.cpp)
 add_executable(lock_free_test lock_free_test.cpp)
 add_executable(threadsafe_list_iterator threadsafe_list_iterator.cpp)
 add_executable(lock_free_queue lock_free_queue.cpp)
+
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
+    include_directories("${PROJECT_SOURCE_DIR}/vld/include")
+    target_link_libraries(lock_free_queue "${PROJECT_SOURCE_DIR}/vld/lib/Win64/vld.lib")
+endif()
