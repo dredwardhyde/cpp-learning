@@ -34,7 +34,7 @@ private:
             new_count.internal_count=0;
             new_count.external_counters=2;
             count.store(new_count);
-
+            data = nullptr;
             counted_node_ptr next_node={0, nullptr};
             next.store(next_node);
         }
@@ -133,7 +133,7 @@ public:
         new_node.ptr=new node;
 
         head.store(new_node);
-        tail.store(new_node);
+        tail.store(head.load());
     }
 
     queue(const queue& other)=delete;
@@ -158,7 +158,7 @@ public:
             counted_node_ptr next=ptr->next.load();
             if(head.compare_exchange_strong(old_head,next))
             {
-                T* const res=ptr->data.exchange(NULL);
+                T* const res=ptr->data.exchange(nullptr);
                 free_external_counter(old_head);
                 return std::unique_ptr<T>(res);
             }
@@ -178,7 +178,7 @@ public:
         {
             increase_external_count(tail,old_tail);
 
-            T* old_data=NULL;
+            T* old_data= nullptr;
             if(old_tail.ptr->data.compare_exchange_strong(
                     old_data,new_data.get()))
             {
@@ -216,7 +216,7 @@ void producer(queue<int>* stack){
 
 void consumer(queue<int>* stack){
     while(std::unique_ptr<int> res = stack->pop()){
-        std::cout << res << std:: endl;
+        std::cout << *res << std:: endl;
     }
 }
 
@@ -234,11 +234,11 @@ int main(){
     std::cout << "Pushing: " << resultTime << std::endl;
     start = std::chrono::high_resolution_clock::now();
     std::thread c(consumer, std::ref(stack));
-//    std::thread d(consumer, std::ref(stack));
-//    std::thread f(consumer, std::ref(stack));
+    std::thread d(consumer, std::ref(stack));
+    std::thread f(consumer, std::ref(stack));
     c.join();
-//    d.join();
-//    f.join();
+    d.join();
+    f.join();
     done = std::chrono::high_resolution_clock::now();
     resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
     std::cout << "Popping: " << resultTime << std::endl;
