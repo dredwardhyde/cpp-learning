@@ -7,6 +7,16 @@
 #include <iostream>
 #include <thread>
 
+inline uint64_t casPointers(volatile uint64_t* ptr,uint64_t old_val, uint64_t new_val) {
+    uint64_t ret_val;
+    __asm__ __volatile__("lock\n\tcmpxchgq %1,%2"
+    :"=a"(ret_val)
+    :"r"(new_val), "m"(*ptr), "0"(old_val)
+    :"memory"
+    );
+    return ret_val;
+}
+
 template<typename T>
 class lock_free_queue {
 private:
@@ -154,6 +164,12 @@ public:
                     // Popping: 44
                     if(new_next.ptr != nullptr) std::cout << "2"; // not null
                     new_next.ptr = new node; //and then allocate new node and we've got memory leak
+//                    node* dummy = new node;
+//                    if(!casPointers((uint64_t*)new_next.ptr, (uint64_t) nullptr, (uint64_t)dummy)){
+//                        std::cout << "1 " << (new_next.ptr == dummy);
+//                    }else{
+//                        std::cout << "2 " << (new_next.ptr == dummy);
+//                    }
                 }
                 set_new_tail(old_tail, old_next);
             }
