@@ -1,5 +1,5 @@
 #ifdef _MSC_VER
-    #include <vld.h>
+    //#include <vld.h>
 #endif
 #include <atomic>
 #include <memory>
@@ -139,9 +139,13 @@ public:
             } else {
                 counted_node_ptr old_next = {0, 0, nullptr};
                 if(old_tail.ptr->next.compare_exchange_strong(old_next,new_next)) {
+                    if(old_next.ptr != nullptr) std::cout << "1";
+                    // 2222222Pushing: 8322268
+                    // Popping: 0
+                    if(new_next.ptr != nullptr) std::cout << "2"; // not null
                     old_next = new_next;
                     // Possible memory leak here?
-                    new_next.ptr = new node;
+                    new_next.ptr = new node; //and then allocate new node and we've got memory leak
                 }
                 set_new_tail(old_tail, old_next);
             }
