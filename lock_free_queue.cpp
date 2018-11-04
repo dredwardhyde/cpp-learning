@@ -10,8 +10,9 @@ private:
     struct node;
 
     struct counted_node_ptr {
-        int external_count;
-        node* ptr;
+        int external_count; // 32 bit
+        int padding; // 32 bit
+        node* ptr; //64 bit
     };
 
     struct node_counter {
@@ -30,7 +31,7 @@ private:
             new_count.external_counters=2;
             count.store(new_count);
             data = nullptr;
-            counted_node_ptr next_node={0, nullptr};
+            counted_node_ptr next_node={0, 0, nullptr};
             next.store(next_node);
         }
 
@@ -135,7 +136,7 @@ public:
 
             T* old_data= nullptr;
             if(old_tail.ptr->data.compare_exchange_strong(old_data,new_data.get())) {
-                counted_node_ptr old_next={0, nullptr};
+                counted_node_ptr old_next={0, 0, nullptr};
                 if(!old_tail.ptr->next.compare_exchange_strong(old_next,new_next)) {
                     std::cout << "Wrong path in Release";
                     delete new_next.ptr;
@@ -145,7 +146,7 @@ public:
                 new_data.release();
                 break;
             } else {
-                counted_node_ptr old_next={0, nullptr};
+                counted_node_ptr old_next={0, 0, nullptr};
                 if(old_tail.ptr->next.compare_exchange_strong(old_next,new_next)) {
                     old_next=new_next;
                     new_next.ptr=new node;
@@ -172,21 +173,21 @@ int main(){
     auto* stack = new queue<int>();
     auto start = std::chrono::high_resolution_clock::now();
     std::thread a(producer, std::ref(stack));
-//    std::thread b(producer, std::ref(stack));
-//    std::thread e(producer, std::ref(stack));
+    std::thread b(producer, std::ref(stack));
+    std::thread e(producer, std::ref(stack));
     a.join();
-//    b.join();
-//    e.join();
+    b.join();
+    e.join();
     auto done = std::chrono::high_resolution_clock::now();
     long resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
     std::cout << "Pushing: " << resultTime << std::endl;
     start = std::chrono::high_resolution_clock::now();
     std::thread c(consumer, std::ref(stack));
-//    std::thread d(consumer, std::ref(stack));
-//    std::thread f(consumer, std::ref(stack));
+    std::thread d(consumer, std::ref(stack));
+    std::thread f(consumer, std::ref(stack));
     c.join();
-//    d.join();
-//    f.join();
+    d.join();
+    f.join();
     done = std::chrono::high_resolution_clock::now();
     resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
     std::cout << "Popping: " << resultTime << std::endl;
