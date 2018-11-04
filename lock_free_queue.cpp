@@ -138,7 +138,6 @@ public:
             if(old_tail.ptr->data.compare_exchange_strong(old_data,new_data.get())) {
                 counted_node_ptr old_next={0, 0, nullptr};
                 if(!old_tail.ptr->next.compare_exchange_strong(old_next,new_next)) {
-                    std::cout << "Wrong path in Release";
                     delete new_next.ptr;
                     new_next=old_next;
                 }
@@ -158,14 +157,14 @@ public:
 };
 
 void producer(queue<int>* stack){
-    for(int i = 0; i < 10;i++){
+    for(int i = 0; i < 1000;i++){
         stack->push(i);
     }
 }
 
 void consumer(queue<int>* stack){
     while(std::unique_ptr<int> res = stack->pop()){
-        std::cout << *res << std:: endl;
+        //std::cout << *res << std:: endl;
     }
 }
 
