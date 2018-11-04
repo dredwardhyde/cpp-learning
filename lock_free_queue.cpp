@@ -8,7 +8,7 @@
 #include <thread>
 
 template<typename T>
-class queue {
+class lock_free_queue {
 private:
     struct node;
 
@@ -88,16 +88,16 @@ private:
     }
 
 public:
-    queue() {
+    lock_free_queue() {
         counted_node_ptr new_node = {1, 0, new node};
         head.store(new_node);
         tail.store(head.load());
     }
 
-    queue(const queue& other) = delete;
-    queue& operator=(const queue& other) = delete;
+    lock_free_queue(const lock_free_queue& other) = delete;
+    lock_free_queue& operator=(const lock_free_queue& other) = delete;
 
-    ~queue() {
+    ~lock_free_queue() {
         while(pop());
         delete head.load().ptr;
     }
@@ -149,24 +149,24 @@ public:
     }
 };
 
-void producer(queue<int>* stack){
+void producer(lock_free_queue<int>* stack){
     for(int i = 0; i < 1000;i++){
         stack->push(i);
     }
 }
 
-void consumer(queue<int>* stack){
+void consumer(lock_free_queue<int>* stack){
     while(std::unique_ptr<int> res = stack->pop()){
         //std::cout << *res << std:: endl;
     }
 }
 
 int main(){
-    auto* stack = new queue<int>();
+    auto* queue = new lock_free_queue<int>();
     auto start = std::chrono::high_resolution_clock::now();
-    std::thread a(producer, std::ref(stack));
-    std::thread b(producer, std::ref(stack));
-    std::thread e(producer, std::ref(stack));
+    std::thread a(producer, std::ref(queue));
+    std::thread b(producer, std::ref(queue));
+    std::thread e(producer, std::ref(queue));
     a.join();
     b.join();
     e.join();
@@ -174,14 +174,14 @@ int main(){
     long resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
     std::cout << "Pushing: " << resultTime << std::endl;
     start = std::chrono::high_resolution_clock::now();
-    std::thread c(consumer, std::ref(stack));
-    std::thread d(consumer, std::ref(stack));
-    std::thread f(consumer, std::ref(stack));
+    std::thread c(consumer, std::ref(queue));
+    std::thread d(consumer, std::ref(queue));
+    std::thread f(consumer, std::ref(queue));
     c.join();
     d.join();
     f.join();
     done = std::chrono::high_resolution_clock::now();
     resultTime = std::chrono::duration_cast<std::chrono::nanoseconds>(done - start).count();
     std::cout << "Popping: " << resultTime << std::endl;
-    delete stack;
+    delete queue;
 }
