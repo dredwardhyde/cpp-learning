@@ -46,3 +46,5 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     include_directories("${PROJECT_SOURCE_DIR}/vld/include")
     target_link_libraries(lock_free_queue "${PROJECT_SOURCE_DIR}/vld/lib/Win64/vld.lib")
 endif()
+
+add_executable(exchange_pointers exchange_pointers.cpp)

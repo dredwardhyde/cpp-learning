@@ -7,9 +7,9 @@
 #include <iostream>
 #include <thread>
 
-inline uint64_t casPointers(volatile uint64_t* ptr,uint64_t old_val, uint64_t new_val) {
+inline uint64_t casPointers(volatile uint64_t* ptr, uint64_t old_val, uint64_t new_val) {
     uint64_t ret_val;
-    __asm__ __volatile__("lock\n\tcmpxchgq %1,%2"
+    __asm__ __volatile__("lock cmpxchgq %1,%2"
     :"=a"(ret_val)
     :"r"(new_val), "m"(*ptr), "0"(old_val)
     :"memory"
@@ -162,14 +162,25 @@ public:
                     // Leaks GCC
                     // 222222222222222222222222222222222222222222222222Pushing: 3475784
                     // Popping: 44
-                    if(new_next.ptr != nullptr) std::cout << "2"; // not null
-                    new_next.ptr = new node; //and then allocate new node and we've got memory leak
+//                    if(new_next.ptr != nullptr) std::cout << "2"; // not null
+//                    new_next.ptr = new node; //and then allocate new node and we've got memory leak
 //                    node* dummy = new node;
 //                    if(!casPointers((uint64_t*)new_next.ptr, (uint64_t) nullptr, (uint64_t)dummy)){
 //                        std::cout << "1 " << (new_next.ptr == dummy);
 //                    }else{
 //                        std::cout << "2 " << (new_next.ptr == dummy);
 //                    }
+                    auto node1 = new node();
+                    std::cout << "Before: " << old_next.ptr << std::endl;
+                    node* empty = nullptr;
+                    if(casPointers((uint64_t*)(&old_next.ptr), (uint64_t)empty, (uint64_t)node1) != 0){
+                        std::cout << "After: " << old_next.ptr << std::endl;
+                        if(old_next.ptr == node1) std::cout << "set" << std::endl;
+                        delete node1;
+                    }else{
+                        if(old_next.ptr == node1) std::cout << "set" << std::endl;
+                    }
+                    std::cout << "OLD" << old_next.ptr << std::endl;
                 }
                 set_new_tail(old_tail, old_next);
             }
