@@ -6,7 +6,8 @@
 #include <utility>
 #include <atomic>
 
-struct A { int a[100]; };
+//Test for 16-byte atomic
+struct A { long a; long b; };
 struct B { int x, y; };
 int main() {
     std::cout << std::boolalpha
