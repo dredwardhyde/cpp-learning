@@ -1,0 +1,169 @@
+AMUN:cpp-learning edwardhyde$ c++ --version
+Apple LLVM version 10.0.0 (clang-1000.10.44.4)
+Target: x86_64-apple-darwin17.7.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+
+
+AMUN:cpp-learning edwardhyde$ c++ -stdlib=libc++ -std=c++11 -march=native -pthread -fsanitize=address -g lock_free_queue.cpp -o a.out
+AMUN:cpp-learning edwardhyde$ valgrind --leak-check=yes /Users/edwardhyde/Documents/cpp-learning/a.out
+==5548== Memcheck, a memory error detector
+==5548== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==5548== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==5548== Command: /Users/edwardhyde/Documents/cpp-learning/a.out
+==5548== 
+==5548== Warning: set address range perms: large range [0xffffffff000, 0x120000000000) (defined)
+==5548== Warning: set address range perms: large range [0x140000000000, 0x200000000000) (defined)
+==5548== Warning: set address range perms: large range [0x120000000000, 0x140000000000) (noaccess)
+==5548== Warning: set address range perms: large range [0x600000000000, 0x640000003000) (noaccess)
+==5548== Conditional jump or move depends on uninitialised value(s)
+==5548==    at 0x1001FCC0D: __sanitizer::VSNPrintf(char*, int, char const*, __va_list_tag*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001F6E58: __sanitizer::FlagParser::run_handler(char const*, char const*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x10020A3DE: __lsan::CheckForLeaksCallback(__sanitizer::SuspendedThreadsList const&, void*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x100208646: __lsan::CheckForLeaks() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x10020A6D8: __sanitizer::InternalMmapVectorNoCtor<__lsan::Leak>::Resize(unsigned long) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001EC837: __asan_print_accumulated_stats (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001E4AE0: __asan::PoisonShadow(unsigned long, unsigned long, unsigned char) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1018CD7E2: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018E07DA: objc_object::sidetable_retainCount() (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x100024C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==5548==    by 0x100024E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==5548==    by 0x10139871D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==5548== 
+==5548== Conditional jump or move depends on uninitialised value(s)
+==5548==    at 0x1001FCC0D: __sanitizer::VSNPrintf(char*, int, char const*, __va_list_tag*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001F6F23: __sanitizer::FlagParser::ParseString(char const*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x10020A3DE: __lsan::CheckForLeaksCallback(__sanitizer::SuspendedThreadsList const&, void*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x100208646: __lsan::CheckForLeaks() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x10020A6D8: __sanitizer::InternalMmapVectorNoCtor<__lsan::Leak>::Resize(unsigned long) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001EC837: __asan_print_accumulated_stats (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001E4AE0: __asan::PoisonShadow(unsigned long, unsigned long, unsigned char) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1018CD7E2: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018E07DA: objc_object::sidetable_retainCount() (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x100024C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==5548==    by 0x100024E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==5548==    by 0x10139871D: _dyld_objc_notify_register (in /usr/lib/system/libdyld.dylib)
+==5548== 
+==5548== Invalid read of size 1
+==5548==    at 0x10018FF78: __asan::Allocator::ReInitialize(__asan::AllocatorOptions const&) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001E4741: void __sanitizer::InternalSort<__sanitizer::InternalMmapVector<__asan::AllocationSite>, __asan::HeapProfile::Print(unsigned long, unsigned long)::{lambda(__asan::AllocationSite const&, __asan::AllocationSite const&)#1}>(__sanitizer::InternalMmapVector<__asan::AllocationSite>*, unsigned long, __asan::HeapProfile::Print(unsigned long, unsigned long)::{lambda(__asan::AllocationSite const&, __asan::AllocationSite const&)#1}) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1018D009E: freeBuckets(NXHashTable*, int) (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFF67: _NXHashRehashToCapacity (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFE96: NXHashInsert (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFB8F: NXCreateHashTableFromZone (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFA50: NXCreateHashTable (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CF950: NXCreateMapTableFromZone (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CF8FA: NXCreateMapTableFromZone (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CE3CB: __sel_registerName(char const*, int, int) (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CE0DA: sel_init (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CD9AD: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==5548==  Address 0x1026001a0 is 16 bytes before a block of size 24 alloc'd
+==5548==    at 0x1000C98AD: malloc_zone_calloc (in /usr/local/Cellar/valgrind/3.14.0/lib/valgrind/vgpreload_memcheck-amd64-darwin.so)
+==5548==    by 0x1018CFDD2: NXHashInsert (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFB8F: NXCreateHashTableFromZone (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFA50: NXCreateHashTable (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CF950: NXCreateMapTableFromZone (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CF8FA: NXCreateMapTableFromZone (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CE3CB: __sel_registerName(char const*, int, int) (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CE0DA: sel_init (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CD9AD: map_images_nolock (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018E07DA: objc_object::sidetable_retainCount() (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x100024C64: dyld::notifyBatchPartial(dyld_image_states, bool, char const* (*)(dyld_image_states, unsigned int, dyld_image_info const*), bool, bool) (in /usr/lib/dyld)
+==5548==    by 0x100024E39: dyld::registerObjCNotifiers(void (*)(unsigned int, char const* const*, mach_header const* const*), void (*)(char const*, mach_header const*), void (*)(char const*, mach_header const*)) (in /usr/lib/dyld)
+==5548== 
+=================================================================
+==5548==ERROR: AddressSanitizer: attempting free on address which was not malloc()-ed: 0x0001026001b0 in thread T0
+==5548== Conditional jump or move depends on uninitialised value(s)
+==5548==    at 0x1001FCC0D: __sanitizer::VSNPrintf(char*, int, char const*, __va_list_tag*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x100209C9C: __lsan::CheckForLeaksCallback(__sanitizer::SuspendedThreadsList const&, void*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002096EA: __lsan::LeakReport::ApplySuppressions() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002046A4: __sanitizer::GetNamedMappingFd(char const*, unsigned long) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002088E9: __lsan::LeakReport::AddLeakedChunk(unsigned long, unsigned int, unsigned long, __lsan::ChunkTag) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002081F7: __lsan::ScanGlobalRange(unsigned long, unsigned long, __sanitizer::InternalMmapVector<unsigned long>*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001997F8: __asan::ErrorAllocTypeMismatch::Print() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001EA706: __asan::AsanInitInternal() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001E94D3: __asan_exp_load1 (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001E4741: void __sanitizer::InternalSort<__sanitizer::InternalMmapVector<__asan::AllocationSite>, __asan::HeapProfile::Print(unsigned long, unsigned long)::{lambda(__asan::AllocationSite const&, __asan::AllocationSite const&)#1}>(__sanitizer::InternalMmapVector<__asan::AllocationSite>*, unsigned long, __asan::HeapProfile::Print(unsigned long, unsigned long)::{lambda(__asan::AllocationSite const&, __asan::AllocationSite const&)#1}) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1018D009E: freeBuckets(NXHashTable*, int) (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFF67: _NXHashRehashToCapacity (in /usr/lib/libobjc.A.dylib)
+==5548== 
+==5548== Conditional jump or move depends on uninitialised value(s)
+==5548==    at 0x100209E9B: __lsan::CheckForLeaksCallback(__sanitizer::SuspendedThreadsList const&, void*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002096EA: __lsan::LeakReport::ApplySuppressions() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002046A4: __sanitizer::GetNamedMappingFd(char const*, unsigned long) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002088E9: __lsan::LeakReport::AddLeakedChunk(unsigned long, unsigned int, unsigned long, __lsan::ChunkTag) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1002081F7: __lsan::ScanGlobalRange(unsigned long, unsigned long, __sanitizer::InternalMmapVector<unsigned long>*) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001997F8: __asan::ErrorAllocTypeMismatch::Print() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001EA706: __asan::AsanInitInternal() (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001E94D3: __asan_exp_load1 (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1001E4741: void __sanitizer::InternalSort<__sanitizer::InternalMmapVector<__asan::AllocationSite>, __asan::HeapProfile::Print(unsigned long, unsigned long)::{lambda(__asan::AllocationSite const&, __asan::AllocationSite const&)#1}>(__sanitizer::InternalMmapVector<__asan::AllocationSite>*, unsigned long, __asan::HeapProfile::Print(unsigned long, unsigned long)::{lambda(__asan::AllocationSite const&, __asan::AllocationSite const&)#1}) (in /Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib)
+==5548==    by 0x1018D009E: freeBuckets(NXHashTable*, int) (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFF67: _NXHashRehashToCapacity (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x1018CFE96: NXHashInsert (in /usr/lib/libobjc.A.dylib)
+==5548== 
+atos cannot load symbols for process 5548.
+==5548==WARNING: Can't read from symbolizer at fd 5
+atos cannot load symbols for process 5548.
+==5548==WARNING: Can't read from symbolizer at fd 5
+atos cannot load symbols for process 5548.
+==5548==WARNING: Can't read from symbolizer at fd 5
+atos cannot load symbols for process 5548.
+==5548==WARNING: Can't read from symbolizer at fd 5
+==5548==WARNING: Failed to use and restart external symbolizer!
+atos cannot load symbols for process 5548.
+    #0 0x1001e467d in wrap_free (/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x5767d)
+    #1 0x1018d009e in freeBuckets(NXHashTable*, int) (/usr/lib/libobjc.A.dylib:x86_64h+0x409e)
+    #2 0x1018cff67 in _NXHashRehashToCapacity (/usr/lib/libobjc.A.dylib:x86_64h+0x3f67)
+    #3 0x1018cfe96 in NXHashInsert (/usr/lib/libobjc.A.dylib:x86_64h+0x3e96)
+    #4 0x1018cfb8f in NXCreateHashTableFromZone (/usr/lib/libobjc.A.dylib:x86_64h+0x3b8f)
+    #5 0x1018cfa50 in NXCreateHashTable (/usr/lib/libobjc.A.dylib:x86_64h+0x3a50)
+    #6 0x1018cf950 in NXCreateMapTableFromZone (/usr/lib/libobjc.A.dylib:x86_64h+0x3950)
+    #7 0x1018cf8fa in NXCreateMapTable (/usr/lib/libobjc.A.dylib:x86_64h+0x38fa)
+    #8 0x1018ce3cb in __sel_registerName(char const*, int, int) (/usr/lib/libobjc.A.dylib:x86_64h+0x23cb)
+    #9 0x1018ce0da in sel_init (/usr/lib/libobjc.A.dylib:x86_64h+0x20da)
+    #10 0x1018cd9ad in map_images_nolock (/usr/lib/libobjc.A.dylib:x86_64h+0x19ad)
+    #11 0x1018e07da in map_images (/usr/lib/libobjc.A.dylib:x86_64h+0x147da)
+    #12 0x100024c64  (/usr/lib/dyld:x86_64+0x4c64)
+    #13 0x100024e39  (/usr/lib/dyld:x86_64+0x4e39)
+    #14 0x10139871d in _dyld_objc_notify_register (/usr/lib/system/libdyld.dylib:x86_64+0x371d)
+    #15 0x1018cd075 in _objc_init (/usr/lib/libobjc.A.dylib:x86_64h+0x1075)
+    #16 0x101322b34 in _os_object_init (/usr/lib/system/libdispatch.dylib:x86_64+0x1b34)
+    #17 0x101322b1b in libdispatch_init (/usr/lib/system/libdispatch.dylib:x86_64+0x1b1b)
+    #18 0x1011fd9c2 in libSystem_initializer (/usr/lib/libSystem.B.dylib:x86_64+0x19c2)
+    #19 0x100036ac5  (/usr/lib/dyld:x86_64+0x16ac5)
+    #20 0x100036cf5  (/usr/lib/dyld:x86_64+0x16cf5)
+    #21 0x100032217  (/usr/lib/dyld:x86_64+0x12217)
+    #22 0x1000321aa  (/usr/lib/dyld:x86_64+0x121aa)
+    #23 0x10003134d  (/usr/lib/dyld:x86_64+0x1134d)
+    #24 0x1000313e1  (/usr/lib/dyld:x86_64+0x113e1)
+    #25 0x100022520  (/usr/lib/dyld:x86_64+0x2520)
+    #26 0x100027238  (/usr/lib/dyld:x86_64+0x7238)
+    #27 0x1000213d3  (/usr/lib/dyld:x86_64+0x13d3)
+    #28 0x1000211d1  (/usr/lib/dyld:x86_64+0x11d1)
+
+Address 0x0001026001b0 is a wild pointer.
+SUMMARY: AddressSanitizer: bad-free (/Library/Developer/CommandLineTools/usr/lib/clang/10.0.0/lib/darwin/libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x5767d) in wrap_free
+==5548== Invalid read of size 4
+==5548==    at 0x1018D2CC5: class_createInstance (in /usr/lib/libobjc.A.dylib)
+==5548==    by 0x101322C11: _os_object_alloc_realized (in /usr/lib/system/libdispatch.dylib)
+==5548==    by 0x10182F300: xpc_dictionary_create (in /usr/lib/system/libxpc.dylib)
+==5548==    by 0x101832823: _bootstrap_create_request (in /usr/lib/system/libxpc.dylib)
+==5548==    by 0x101832565: bootstrap_look_up3 (in /usr/lib/system/libxpc.dylib)
+==5548==    by 0x1018324FE: bootstrap_look_up2 (in /usr/lib/system/libxpc.dylib)
+==5548==    by 0x10176EAE7: ___notify_lib_init_block_invoke (in /usr/lib/system/libsystem_notify.dylib)
+==5548==    by 0x101322DB7: _dispatch_client_callout (in /usr/lib/system/libdispatch.dylib)
+==5548==    by 0x101322D6A: dispatch_once_f (in /usr/lib/system/libdispatch.dylib)
+==5548==    by 0x10176B675: _notify_lib_init (in /usr/lib/system/libsystem_notify.dylib)
+==5548==    by 0x10176C583: notify_register_check (in /usr/lib/system/libsystem_notify.dylib)
+==5548==    by 0x1018096E0: _os_trace_prefs_and_mode_refresh_slow (in /usr/lib/system/libsystem_trace.dylib)
+==5548==  Address 0x10 is not stack'd, malloc'd or (recently) free'd
+==5548== 
+AddressSanitizer:DEADLYSIGNAL
+AddressSanitizer: nested bug in the same thread, aborting.
+==5548== 
+==5548== HEAP SUMMARY:
+==5548==     in use at exit: 208 bytes in 7 blocks
+==5548==   total heap usage: 7 allocs, 0 frees, 208 bytes allocated
+==5548== 
+Killed: 9
+AMUN:cpp-learning edwardhyde$ 
