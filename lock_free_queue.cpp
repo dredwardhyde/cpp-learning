@@ -7,15 +7,15 @@
 #include <iostream>
 #include <thread>
 
-inline uint64_t casPointers(volatile uint64_t* ptr, uint64_t old_val, uint64_t new_val) {
-    uint64_t ret_val;
-    __asm__ __volatile__("lock cmpxchgq %1,%2"
-    :"=a"(ret_val)
-    :"r"(new_val), "m"(*ptr), "0"(old_val)
-    :"memory"
-    );
-    return ret_val;
-}
+//inline uint64_t casPointers(volatile uint64_t* ptr, uint64_t old_val, uint64_t new_val) {
+//    uint64_t ret_val;
+//    __asm__ __volatile__("lock cmpxchgq %1,%2"
+//    :"=a"(ret_val)
+//    :"r"(new_val), "m"(*ptr), "0"(old_val)
+//    :"memory"
+//    );
+//    return ret_val;
+//}
 
 template<typename T>
 class lock_free_queue {
@@ -150,37 +150,7 @@ public:
                 counted_node_ptr old_next = {0, 0, nullptr};
                 if(old_tail.ptr->next.compare_exchange_strong(old_next,new_next)) {
                     old_next = new_next;
-                    // Possible memory leak here?
-                    // Basically what I need here is to atomically compare new_next.ptr with nullptr and swap reference to new node, if false - delete that new node
-                    // node* dummy = new node
-                    // if(!new_next.ptr.compare_exchange_strong(nullptr, dummy)) delete dummy;
-
-                    // Leaks MSVC
-                    // 2222222Pushing: 8322268
-                    // Popping: 0
-
-                    // Leaks GCC
-                    // 222222222222222222222222222222222222222222222222Pushing: 3475784
-                    // Popping: 44
-//                    if(new_next.ptr != nullptr) std::cout << "2"; // not null
-//                    new_next.ptr = new node; //and then allocate new node and we've got memory leak
-//                    node* dummy = new node;
-//                    if(!casPointers((uint64_t*)new_next.ptr, (uint64_t) nullptr, (uint64_t)dummy)){
-//                        std::cout << "1 " << (new_next.ptr == dummy);
-//                    }else{
-//                        std::cout << "2 " << (new_next.ptr == dummy);
-//                    }
-                    auto node1 = new node();
-                    std::cout << "Before: " << old_next.ptr << std::endl;
-                    node* empty = nullptr;
-                    if(casPointers((uint64_t*)(&old_next.ptr), (uint64_t)empty, (uint64_t)node1) != 0){
-                        std::cout << "After: " << old_next.ptr << std::endl;
-                        if(old_next.ptr == node1) std::cout << "set" << std::endl;
-                        delete node1;
-                    }else{
-                        if(old_next.ptr == node1) std::cout << "set" << std::endl;
-                    }
-                    std::cout << "OLD" << old_next.ptr << std::endl;
+                    new_next.ptr = new node;
                 }
                 set_new_tail(old_tail, old_next);
             }
@@ -256,6 +226,18 @@ void consumer(lock_free_queue<int>* stack){
         Total allocations: 888804 bytes.
         Visual Leak Detector is now exiting.
 
+
+
+    However on Ubuntu 18.04 with clang - nothing found - no exceptions, no leaks
+
+    clang version 6.0.0-1ubuntu2 (tags/RELEASE_600/final)
+    Target: x86_64-pc-linux-gnu
+    Thread model: posix
+    InstalledDir: /usr/bin
+
+    tony@tony-XPS-13-9360:~/Development/github/cpp-learning$ clang++-6.0 -stdlib=libc++ -march=native -fsanitize=address -g lock_free_queue.cpp ; ASAN_OPTIONS=detect_leaks=1 ./a.out
+    Pushing: 6428670
+    Popping: 159
  */
 int main(){
     auto* queue = new lock_free_queue<int>();
