@@ -50,6 +50,7 @@ add_executable(lock_free_queue lock_free_queue.cpp)
 add_executable(equality_overloading equality_overloading.cpp)
 add_executable(exchange_pointers exchange_pointers.cpp)
 add_executable(memory_allocation memory_allocation.cpp)
+add_executable(itoa itoa.cpp)
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     include_directories("${PROJECT_SOURCE_DIR}/vld/include")
