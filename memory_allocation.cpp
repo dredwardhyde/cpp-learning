@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <thread>
 #include <chrono>
+#include <iostream>
 
 /*
         Program output:
@@ -129,8 +130,45 @@
         DefaultMallocZone_0x1036a7000       2304          8          8          0        158        17K        15K     47%       2
 
 
+
+
+        [oracle@localhost ~]$ pmap 26079
+        26079:   /home/oracle/CLionProjects/cpp-learning/cmake-build-debug/memory_allocation
+        0000000000400000      8K r-x-- memory_allocation
+        0000000000601000      4K r---- memory_allocation
+        0000000000602000      4K rw--- memory_allocation
+        00000002007d0000      4K rwx--   [ anon ]    <<<<<----- here is our allocation
+        00007f9b86379000   1800K r-x-- libc-2.17.so
+        00007f9b8653b000   2048K ----- libc-2.17.so
+        00007f9b8673b000     16K r---- libc-2.17.so
+        00007f9b8673f000      8K rw--- libc-2.17.so
+        00007f9b86741000     20K rw---   [ anon ]
+        00007f9b86746000     84K r-x-- libgcc_s-4.8.5-20150702.so.1
+        00007f9b8675b000   2044K ----- libgcc_s-4.8.5-20150702.so.1
+        00007f9b8695a000      4K r---- libgcc_s-4.8.5-20150702.so.1
+        00007f9b8695b000      4K rw--- libgcc_s-4.8.5-20150702.so.1
+        00007f9b8695c000   1028K r-x-- libm-2.17.so
+        00007f9b86a5d000   2044K ----- libm-2.17.so
+        00007f9b86c5c000      4K r---- libm-2.17.so
+        00007f9b86c5d000      4K rw--- libm-2.17.so
+        00007f9b86c5e000    932K r-x-- libstdc++.so.6.0.19
+        00007f9b86d47000   2044K ----- libstdc++.so.6.0.19
+        00007f9b86f46000     32K r---- libstdc++.so.6.0.19
+        00007f9b86f4e000      8K rw--- libstdc++.so.6.0.19
+        00007f9b86f50000     84K rw---   [ anon ]
+        00007f9b86f65000    136K r-x-- ld-2.17.so
+        00007f9b8717f000     28K rw---   [ anon ]
+        00007f9b87186000      4K r---- ld-2.17.so
+        00007f9b87187000      4K rw--- ld-2.17.so
+        00007f9b87188000      4K rw---   [ anon ]
+        00007ffded1d6000    132K rw---   [ stack ]
+        00007ffded1fa000      8K r-x--   [ anon ]
+        ffffffffff600000      4K r-x--   [ anon ]
+        total             12548K
+
  */
 int main() {
+    std::cout << getpid() << std::endl;
     auto pagesize = (size_t)getpagesize();
 
     printf("System page size: %zu bytes\n", pagesize);
