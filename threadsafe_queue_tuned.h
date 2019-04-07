@@ -8,7 +8,7 @@
 #include <memory>
 #include <mutex>
 
-#if defined(__USE_GNU) || defined(__MINGW32__)
+#if defined(__USE_GNU) || defined(__MINGW32__) || defined(__CYGWIN__)
     #include <condition_variable>
 #endif
 

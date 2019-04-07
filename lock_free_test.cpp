@@ -13,7 +13,9 @@ int main() {
     std::cout << std::boolalpha
               << "std::atomic<A> is lock free? "
               #ifndef __USE_GNU
+              #ifndef __CYGWIN__
               << std::atomic<A>{}.is_lock_free() << '\n'
+              #endif
               #endif
               << "std::atomic<B> is lock free? "
               << std::atomic<B>{}.is_lock_free() << '\n';
