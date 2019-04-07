@@ -2,8 +2,6 @@
 // Created by Edward Hyde on 15/10/2018.
 //
 
-#ifdef _USE_TSX
-
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,4 +40,3 @@ int main () {
     }
     return 0;
 }
-#endif

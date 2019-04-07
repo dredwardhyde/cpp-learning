@@ -12,7 +12,9 @@ struct B { int x, y; };
 int main() {
     std::cout << std::boolalpha
               << "std::atomic<A> is lock free? "
+              #ifndef __USE_GNU
               << std::atomic<A>{}.is_lock_free() << '\n'
+              #endif
               << "std::atomic<B> is lock free? "
               << std::atomic<B>{}.is_lock_free() << '\n';
 }

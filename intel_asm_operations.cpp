@@ -13,7 +13,7 @@ asm(
 #ifdef __APPLE__
 "_add:\n"
 #endif
-#if defined(__linux__) || defined(__unix__)
+#if defined(__linux__) || defined(__unix__) || defined(__MINGW32__)
 "add:\n"
 #endif
 "  lea (%rdi, %rsi), %rax\n"
@@ -26,7 +26,7 @@ asm(
 #ifdef __APPLE__
 asm("_floatadd:\n"
 #endif
-#if defined(__linux__) || defined(__unix__)
+#if defined(__linux__) || defined(__unix__) || defined(__MINGW32__)
 asm("floatadd:\n"
 #endif
     "    addsd %xmm1,%xmm0\n"

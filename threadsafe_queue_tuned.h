@@ -8,6 +8,9 @@
 #include <memory>
 #include <mutex>
 
+#if defined(__USE_GNU) || defined(__MINGW32__)
+    #include <condition_variable>
+#endif
 
 template<typename T>
 class threadsafe_queue_tuned {

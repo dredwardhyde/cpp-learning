@@ -9,6 +9,9 @@
 #include <functional>
 #include <thread>
 
+#if defined(__USE_GNU) || defined(__MINGW32__)
+    #include <atomic>
+#endif
 
 // Simulate mapreduce in cpp
 

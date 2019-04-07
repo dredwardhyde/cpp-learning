@@ -7,6 +7,9 @@
 #include <thread>
 #include <iostream>
 
+#if defined(__USE_GNU) || defined(__MINGW32__)
+    #include <condition_variable>
+#endif
 // Single producer & multiple consumers implementation in C++
 
 std::mutex mut;

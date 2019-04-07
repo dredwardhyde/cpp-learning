@@ -6,6 +6,11 @@
 #include <iostream>
 #include <vector>
 
+#if defined(__USE_GNU) || defined(__MINGW32__)
+    #include <algorithm>
+    #include <functional>
+#endif
+
 class thread_guard {
 private:
     std::thread& t;
