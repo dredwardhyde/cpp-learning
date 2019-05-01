@@ -48,6 +48,7 @@ add_executable(lock_free_queue lock_free_queue.cpp)
 add_executable(equality_overloading equality_overloading.cpp)
 add_executable(exchange_pointers exchange_pointers.cpp)
 add_executable(itoa itoa.cpp)
+add_executable(cpu_cache_test cpu_cache_test.cpp)
 
 if(NOT (MINGW))
     add_executable(memory_allocation memory_allocation.cpp)
