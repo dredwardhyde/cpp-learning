@@ -49,6 +49,7 @@ add_executable(equality_overloading equality_overloading.cpp)
 add_executable(exchange_pointers exchange_pointers.cpp)
 add_executable(itoa itoa.cpp)
 add_executable(cpu_cache_test cpu_cache_test.cpp)
+add_executable(lambdas lambdas.cpp)
 
 if(NOT (MINGW))
     add_executable(memory_allocation memory_allocation.cpp)
