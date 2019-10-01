@@ -51,6 +51,11 @@ add_executable(itoa itoa.cpp)
 add_executable(cpu_cache_test cpu_cache_test.cpp)
 add_executable(lambdas lambdas.cpp)
 
+if(APPLE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+    add_executable(fma fma.cpp)
+endif()
+
 if(NOT (MINGW))
     add_executable(memory_allocation memory_allocation.cpp)
 endif()
